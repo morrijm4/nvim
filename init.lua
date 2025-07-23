@@ -30,8 +30,8 @@ require('lazy').setup(lazy_opts)
 ------------------
 -- Color scheme --
 ------------------
-vim.o.background = "dark" -- or "light" for light mode
-vim.cmd([[colorscheme gruvbox]])
+vim.o.background = 'dark' -- or 'light' for light mode
+vim.cmd('colorscheme gruvbox')
 
 vim.keymap.set('n', '<Leader>e', ':Explore<CR>',                                { desc = '[mm] Open file explorer' })
 vim.keymap.set('v', '<Leader>y', '"+y',                                         { desc = '[mm] Yank to clipboard' })
@@ -57,6 +57,7 @@ local telescope = require('telescope.builtin')
 vim.keymap.set('n',          '<Leader>p',  telescope.find_files,                { desc = '[mm] File finder' })
 vim.keymap.set('n',          'gs',         telescope.git_status,                { desc = '[mm] Git status' })
 vim.keymap.set('n',          '<Leader>fb', telescope.current_buffer_fuzzy_find, { desc = '[mm] Search current buffer' })
+vim.keymap.set('n',          '<Leader>fh', telescope.help_tags,                 { desc = '[mm] Search help tags' })
 vim.keymap.set({ 'n', 'v' }, '<Leader>fs', telescope.grep_string,               { desc = '[mm] Grep string under cursor or highlighted' })
 vim.keymap.set({ 'n', 'v' }, '<Leader>fw', telescope.live_grep,                 { desc = '[mm] Live grep' })
 vim.keymap.set({ 'n', 'v' }, '<Leader>ss', telescope.spell_suggest,             { desc = '[mm] Spell suggest' })
