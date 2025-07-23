@@ -48,12 +48,13 @@ vim.keymap.set('n', '<Leader>>', '<C-w>>',                                      
 -- Terminal --
 --------------
 vim.keymap.set('n', '<Leader>t', ':vert rightb terminal<CR>',                   { desc = '[mm] Open terminal' })
-vim.cmd([[tnoremap <Esc> <C-\><C-n>]]) -- map Esc to exit "TERMINAL" mo         de
+vim.cmd([[tnoremap <Esc> <C-\><C-n>]]) -- map Esc to exit "TERMINAL" mode
 
 ---------------
 -- Telescope --
 ---------------
 local telescope = require('telescope.builtin')
+
 vim.keymap.set('n',          '<Leader>p',  telescope.find_files,                { desc = '[mm] File finder' })
 vim.keymap.set('n',          'gs',         telescope.git_status,                { desc = '[mm] Git status' })
 vim.keymap.set('n',          '<Leader>fb', telescope.current_buffer_fuzzy_find, { desc = '[mm] Search current buffer' })
@@ -74,7 +75,6 @@ vim.lsp.config('*', {
 })
 
 require('lsp-config.lua_ls')
-
 
 vim.o.completeopt = 'menu,menuone,noselect,popup' -- Disable autocomplete & new popup
 
