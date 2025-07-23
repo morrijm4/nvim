@@ -54,7 +54,6 @@ vim.cmd([[tnoremap <Esc> <C-\><C-n>]]) -- map Esc to exit "TERMINAL" mode
 -- Telescope --
 ---------------
 local telescope = require('telescope.builtin')
-
 vim.keymap.set('n',          '<Leader>p',  telescope.find_files,                { desc = '[mm] File finder' })
 vim.keymap.set('n',          'gs',         telescope.git_status,                { desc = '[mm] Git status' })
 vim.keymap.set('n',          '<Leader>fb', telescope.current_buffer_fuzzy_find, { desc = '[mm] Search current buffer' })
