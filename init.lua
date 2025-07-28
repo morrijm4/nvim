@@ -1,8 +1,23 @@
 require('bootstrap')
 
-vim.opt.rtp:prepend(vim.fn.stdpath('data') .. '/lazy/lazy.nvim')
+-- TODO: implement spell check
+
+-------------
+-- Options --
+-------------
+vim.opt.relativenumber = true
+
+vim.o.tabstop = 4
+vim.o.shiftwidth = 4
+vim.o.expandtab = true
+vim.o.softtabstop = 4
 
 vim.g.mapleader = ' '
+
+-------------
+-- Lazy --
+-------------
+vim.opt.rtp:prepend(vim.fn.stdpath('data') .. '/lazy/lazy.nvim')
 
 ---@type LazySpec
 local lazy_spec = {
@@ -91,17 +106,6 @@ cmp.setup.cmdline({ '/', '?' }, {
     sources = { { name = 'buffer' } },
 })
 
--------------
--- Options --
--------------
-vim.opt.relativenumber = true
-vim.o.tabstop = 4
-vim.o.shiftwidth = 4
-vim.o.expandtab = true
-vim.o.softtabstop = 4
-
--- TODO: implement spell check
-
 ----------------------
 -- Language servers --
 ----------------------
@@ -129,7 +133,6 @@ vim.lsp.config('*', {
 })
 
 require('lsp-config.lua_ls')
-
 
 vim.lsp.enable({
     'lua_ls',
