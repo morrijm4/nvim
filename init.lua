@@ -11,7 +11,7 @@ vim.o.tabstop = 4
 vim.o.shiftwidth = 4
 vim.o.expandtab = true
 vim.o.softtabstop = 4
-
+vim.o.winborder = 'rounded'
 vim.g.mapleader = ' '
 
 -------------
@@ -51,10 +51,15 @@ require('lazy').setup(lazy_opts)
 vim.o.background = 'dark' -- or 'light' for light mode
 vim.cmd.colorscheme 'catppuccin-macchiato'
 
+
+-----------
+-- Misc. --
+-----------
 vim.keymap.set('n', '<Leader>e', ':Explore<CR>', { desc = '[mm] Open file explorer' })
 vim.keymap.set('v', '<Leader>y', '"+y', { desc = '[mm] Yank to clipboard' })
 vim.keymap.set('n', '<Leader>l', ':Lazy<CR>', { desc = '[mm] Open lazy.nvim' })
 vim.keymap.set('n', '<Leader>h', ':vert rightb help ', { desc = '[mm] Open help vertically' })
+vim.keymap.set('n', '<Leader>q', ':b#|bd#<CR>', { desc = '[mm] Delete current window and go bac' })
 
 -------------
 -- Windows --
@@ -74,6 +79,7 @@ vim.cmd([[tnoremap <Esc> <C-\><C-n>]]) -- map Esc to exit "TERMINAL" mode
 local telescope = require('telescope.builtin')
 vim.keymap.set('n', '<Leader>p', telescope.find_files, { desc = '[mm] File finder' })
 vim.keymap.set('n', 'gs', telescope.git_status, { desc = '[mm] Git status' })
+vim.keymap.set('n', '<C-Space>', vim.lsp.buf.code_action, { desc = '[mm] Find code action' })
 vim.keymap.set('n', '<Leader>fb', telescope.buffers, { desc = '[mm] Search current buffer' })
 vim.keymap.set('n', '<Leader>fh', telescope.help_tags, { desc = '[mm] Search help tags' })
 vim.keymap.set('n', '<Leader>fk', telescope.keymaps, { desc = '[mm] Find keymap' })
@@ -114,6 +120,7 @@ vim.keymap.set('n', 'gi', telescope.lsp_implementations, { desc = '[mm] Go to de
 vim.keymap.set('n', 'gr', telescope.lsp_references, { desc = '[mm] Go to definition' })
 vim.keymap.set('n', 'gl', vim.diagnostic.open_float, { desc = '[mm] Show diagnositc' })
 vim.keymap.set('n', 'ff', vim.lsp.buf.format, { desc = '[mm] Format file' })
+vim.keymap.set('n', '<Leader>r', vim.lsp.buf.rename, { desc = '[mm] Rename' })
 
 local autosave_group = vim.api.nvim_create_augroup('AutoSave', {})
 vim.api.nvim_create_autocmd('BufWritePre', {
