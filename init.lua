@@ -150,4 +150,5 @@ vim.lsp.enable({
     'html',
     'eslint',
     'tailwindcss',
+    'tinymist',
 })
