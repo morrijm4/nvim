@@ -115,9 +115,14 @@ cmp.setup.cmdline({ '/', '?' }, {
 ----------------------
 -- Language servers --
 ----------------------
-vim.keymap.set('n', 'gd', telescope.lsp_definitions, { desc = '[mm] Go to definition' })
-vim.keymap.set('n', 'gi', telescope.lsp_implementations, { desc = '[mm] Go to definition' })
-vim.keymap.set('n', 'gr', telescope.lsp_references, { desc = '[mm] Go to definition' })
+local function go_to_definitions()
+    vim.cmd('fc!')
+    telescope.lsp_definitions()
+end
+
+vim.keymap.set('n', 'gd', go_to_definitions, { desc = '[mm] Go to definition' })
+vim.keymap.set('n', 'gi', telescope.lsp_implementations, { desc = '[mm] Go to implementations' })
+vim.keymap.set('n', 'gr', telescope.lsp_references, { desc = '[mm] Go to references' })
 vim.keymap.set('n', 'gl', vim.diagnostic.open_float, { desc = '[mm] Show diagnositc' })
 vim.keymap.set('n', 'ff', vim.lsp.buf.format, { desc = '[mm] Format file' })
 vim.keymap.set('n', '<Leader>r', vim.lsp.buf.rename, { desc = '[mm] Rename' })
