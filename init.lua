@@ -116,7 +116,7 @@ cmp.setup.cmdline({ '/', '?' }, {
 -- Language servers --
 ----------------------
 local function go_to_definitions()
-    vim.cmd('fc!')
+    vim.cmd('fc!') -- close all floating windows
     telescope.lsp_definitions()
 end
 
