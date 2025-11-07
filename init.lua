@@ -1,18 +1,18 @@
 require('bootstrap')
 
--- TODO: implement spell check
-
 -------------
 -- Options --
 -------------
 vim.opt.relativenumber = true
 
+vim.o.number = true
 vim.o.tabstop = 4
 vim.o.shiftwidth = 4
 vim.o.expandtab = true
 vim.o.softtabstop = 4
 vim.o.winborder = 'rounded'
 vim.g.mapleader = ' '
+vim.g.netrw_liststyle = 3 -- tree style
 
 -------------
 -- Lazy --
@@ -33,6 +33,27 @@ local lazy_spec = {
             'hrsh7th/cmp-path',
             'hrsh7th/cmp-cmdline',
         }
+    },
+    {
+        'chomosuke/typst-preview.nvim',
+        ft = 'typst',
+        version = '1.*',
+        opts = {},
+        config = function()
+            vim.keymap.set("n", "<leader>T", ":TypstPreview<CR>", { desc = "[mm] Open Typst preview" })
+        end
+
+    },
+    {
+        "kiyoon/jupynium.nvim",
+        -- build = "pip3 install --user .",
+        -- build = "uv pip install . --python=$HOME/.virtualenvs/jupynium/bin/python",
+        build = "conda run --no-capture-output -n aml pip install .",
+        opts = {
+            default_notebook_URL = "localhost:8889/nbclassic",
+            python_host = { "conda", "run", "--no-capture-output", "-n", "aml", "python" },
+            jupyter_command = { "conda", "run", "--no-capture-output", "-n", "aml", "jupyter" }
+        },
     },
 }
 
@@ -95,11 +116,22 @@ vim.keymap.set({ 'n', 'v' }, '<Leader>ss', telescope.spell_suggest, { desc = '[m
 local cmp = require('cmp')
 
 cmp.setup({
+    sources = cmp.config.sources({
+        { name = "jupynium", priority = 1000 },
+        { name = 'nvim_lsp', priority = 100 },
+    }),
+    sorting = {
+        priority_weight = 1.0,
+        comparators = {
+            cmp.config.compare.score, -- Jupyter kernel completion shows prior to LSP
+            cmp.config.compare.recently_used,
+            cmp.config.compare.locality,
+        },
+    },
     mapping = cmp.mapping.preset.insert({
         ['<C-Space>'] = cmp.mapping.complete(),
         ['<CR>'] = cmp.mapping.confirm({ select = true }),
     }),
-    sources = cmp.config.sources({ { name = 'nvim_lsp' } }),
 })
 
 cmp.setup.cmdline(':', {
@@ -131,7 +163,23 @@ local autosave_group = vim.api.nvim_create_augroup('AutoSave', {})
 vim.api.nvim_create_autocmd('BufWritePre', {
     group = autosave_group,
     callback = function()
-        vim.lsp.buf.format({ async = false })
+        vim.lsp.buf.format({
+            async = false,
+            filter = function(client)
+                local disable = {
+                    "clangd",
+                }
+
+                for _, language_server in pairs(disable) do
+                    if language_server == client.name then
+                        return false
+                    end
+                end
+
+                return true
+            end
+
+        })
     end
 })
 
@@ -148,12 +196,15 @@ require('lsp-config.lua_ls')
 
 vim.lsp.enable({
     'lua_ls',
-    'rust_analyzer',
+    'rust_analyzer', -- install via rust toolchain
     'ts_ls',
     'jsonls',
     'cssls',
     'html',
     'eslint',
     'tailwindcss',
-    'tinymist',
+    'tinymist', -- install via cargo
+    'clangd',
+    'pyright',  -- install via pip
+    'ruff'      -- install via brew
 })
