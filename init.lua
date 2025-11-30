@@ -1,6 +1,6 @@
 require('bootstrap')
 
--------------
+------------
 -- Options --
 -------------
 vim.opt.relativenumber = true
@@ -72,10 +72,21 @@ require('lazy').setup(lazy_opts)
 vim.o.background = 'dark' -- or 'light' for light mode
 vim.cmd.colorscheme 'catppuccin-macchiato'
 
+--------------
+-- Snippets --
+--------------
+local snippet_path = vim.fs.joinpath(vim.fn.stdpath("config"), "snippets/")
+vim.keymap.set('n', '<Leader>k', ':r ' .. snippet_path, { desc = '[mm] Load a snippet' })
+vim.keymap.set('v', '<Leader>k', ':w ' .. snippet_path, { desc = '[mm] Create a snippet' })
+vim.keymap.set('n', '<Leader><C-k>', ':e ' .. snippet_path, { desc = '[mm] Edit a snippet' })
+vim.keymap.set('n', '<Leader>K', ':!ls ' .. snippet_path .. "<CR>", { desc = '[mm] List snippets' })
+vim.keymap.set('n', '<Leader>d', ':!rm ' .. snippet_path, { desc = '[mm] Delete a snippet' })
+
 
 -----------
 -- Misc. --
 -----------
+vim.keymap.set('n', '<Leader>|', ':nohls<CR>', { desc = '[mm] Clear highlight after search' })
 vim.keymap.set('n', '<Leader>e', ':Explore<CR>', { desc = '[mm] Open file explorer' })
 vim.keymap.set('v', '<Leader>y', '"+y', { desc = '[mm] Yank to clipboard' })
 vim.keymap.set('n', '<Leader>l', ':Lazy<CR>', { desc = '[mm] Open lazy.nvim' })
@@ -154,7 +165,7 @@ end
 
 vim.keymap.set('n', 'gd', go_to_definitions, { desc = '[mm] Go to definition' })
 vim.keymap.set('n', 'gi', telescope.lsp_implementations, { desc = '[mm] Go to implementations' })
-vim.keymap.set('n', 'gr', telescope.lsp_references, { desc = '[mm] Go to references' })
+vim.keymap.set('n', 'grr', telescope.lsp_references, { desc = '[mm] Go to references' })
 vim.keymap.set('n', 'gl', vim.diagnostic.open_float, { desc = '[mm] Show diagnositc' })
 vim.keymap.set('n', 'ff', vim.lsp.buf.format, { desc = '[mm] Format file' })
 vim.keymap.set('n', '<Leader>r', vim.lsp.buf.rename, { desc = '[mm] Rename' })
