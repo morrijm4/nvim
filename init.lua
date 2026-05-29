@@ -1,4 +1,5 @@
 require('bootstrap')
+require('rsync')
 
 ------------
 -- Options --
@@ -12,7 +13,6 @@ vim.o.expandtab = true
 vim.o.softtabstop = 4
 vim.o.winborder = 'rounded'
 vim.g.mapleader = ' '
-vim.g.netrw_liststyle = 3 -- tree style
 
 -------------
 -- Lazy --
@@ -40,6 +40,7 @@ local lazy_spec = {
         version = '1.*',
         opts = {},
         config = function()
+            vim.g.jupynium_auto_download_ipynb = false
             vim.keymap.set("n", "<leader>T", ":TypstPreview<CR>", { desc = "[mm] Open Typst preview" })
         end
 
@@ -54,6 +55,10 @@ local lazy_spec = {
             python_host = { "conda", "run", "--no-capture-output", "-n", "aml", "python" },
             jupyter_command = { "conda", "run", "--no-capture-output", "-n", "aml", "jupyter" }
         },
+        config = function()
+            vim.g.jupynium_auto_download_ipynb = false
+            vim.keymap.set("n", "<leader>J", ":Jupynium", { desc = "[mm] Jupynium prefix" })
+        end
     },
 }
 
@@ -147,7 +152,7 @@ cmp.setup({
 
 cmp.setup.cmdline(':', {
     mapping = cmp.mapping.preset.cmdline(),
-    sources = cmp.config.sources({ { name = 'path' } }, { { name = 'cmdline' } }),
+    sources = cmp.config.sources({ { name = 'path' }, { name = 'cmdline' } }),
 })
 
 cmp.setup.cmdline({ '/', '?' }, {
@@ -167,6 +172,7 @@ vim.keymap.set('n', 'gd', go_to_definitions, { desc = '[mm] Go to definition' })
 vim.keymap.set('n', 'gi', telescope.lsp_implementations, { desc = '[mm] Go to implementations' })
 vim.keymap.set('n', 'grr', telescope.lsp_references, { desc = '[mm] Go to references' })
 vim.keymap.set('n', 'gl', vim.diagnostic.open_float, { desc = '[mm] Show diagnositc' })
+vim.keymap.set('n', 'gh', vim.lsp.buf.hover, { desc = '[mm] Hover' })
 vim.keymap.set('n', 'ff', vim.lsp.buf.format, { desc = '[mm] Format file' })
 vim.keymap.set('n', '<Leader>r', vim.lsp.buf.rename, { desc = '[mm] Rename' })
 
@@ -179,6 +185,7 @@ vim.api.nvim_create_autocmd('BufWritePre', {
             filter = function(client)
                 local disable = {
                     "clangd",
+                    "solidity_ls_nomicfoundation",
                 }
 
                 for _, language_server in pairs(disable) do
@@ -204,6 +211,14 @@ vim.lsp.config('*', {
 })
 
 require('lsp-config.lua_ls')
+require('lsp-config.zls')
+
+vim.lsp.config('clangd', {
+    cmd = {
+        "clangd",
+        "--query-driver=/Users/matthew/.espressif/tools/**",
+    },
+})
 
 vim.lsp.enable({
     'lua_ls',
@@ -214,8 +229,9 @@ vim.lsp.enable({
     'html',
     'eslint',
     'tailwindcss',
-    'tinymist', -- install via cargo
+    'tinymist',                    -- install via cargo
     'clangd',
-    'pyright',  -- install via pip
-    'ruff'      -- install via brew
+    'pyright',                     -- install via pip
+    'ruff',                        -- install via brew
+    'solidity_ls_nomicfoundation', -- install via npm
 })

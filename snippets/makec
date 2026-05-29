@@ -1,8 +1,8 @@
-CC = g++
+CC = gcc
 CMD = cmd
-SRC = main.cpp
+SRC = main.c
 DEBUG_FLAGS = -g -fsanitize=address -fno-omit-frame-pointer 
-CFLAGS = -Wall -Wextra -o $(CMD) -std=c++17 $(DEBUG_FLAGS)
+CFLAGS = -Wall -Wextra -o $(CMD) $(DEBUG_FLAGS)
 
 $(CMD): $(SRC)
 	$(CC) $(CFLAGS) $(SRC)
