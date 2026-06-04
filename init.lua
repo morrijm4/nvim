@@ -23,6 +23,27 @@ vim.opt.rtp:prepend(vim.fn.stdpath('data') .. '/lazy/lazy.nvim')
 local lazy_spec = {
     { "catppuccin/nvim",                 name = "catppuccin", priority = 1000 },
     { 'neovim/nvim-lspconfig' },
+    { 'mason-org/mason.nvim',            opts = {} },
+    {
+        'mason-org/mason-lspconfig.nvim',
+        dependencies = { 'mason-org/mason.nvim', 'neovim/nvim-lspconfig' },
+        opts = {
+            ensure_installed = {
+                'lua_ls',
+                'ts_ls',
+                'jsonls',
+                'cssls',
+                'html',
+                'eslint',
+                'tailwindcss',
+                'tinymist',
+                'clangd',
+                'pyright',
+                'ruff',
+                'solidity_ls_nomicfoundation',
+            },
+        },
+    },
     { 'nvim-telescope/telescope.nvim',   tag = '0.1.8',       dependencies = { 'nvim-lua/plenary.nvim' } },
     { 'nvim-treesitter/nvim-treesitter', branch = 'master',   lazy = false,                              build = ':TSUpdate' },
     {
@@ -45,21 +66,21 @@ local lazy_spec = {
         end
 
     },
-    {
-        "kiyoon/jupynium.nvim",
-        -- build = "pip3 install --user .",
-        -- build = "uv pip install . --python=$HOME/.virtualenvs/jupynium/bin/python",
-        build = "conda run --no-capture-output -n aml pip install .",
-        opts = {
-            default_notebook_URL = "localhost:8889/nbclassic",
-            python_host = { "conda", "run", "--no-capture-output", "-n", "aml", "python" },
-            jupyter_command = { "conda", "run", "--no-capture-output", "-n", "aml", "jupyter" }
-        },
-        config = function()
-            vim.g.jupynium_auto_download_ipynb = false
-            vim.keymap.set("n", "<leader>J", ":Jupynium", { desc = "[mm] Jupynium prefix" })
-        end
-    },
+    -- {
+    --     "kiyoon/jupynium.nvim",
+    --     -- build = "pip3 install --user .",
+    --     -- build = "uv pip install . --python=$HOME/.virtualenvs/jupynium/bin/python",
+    --     build = "conda run --no-capture-output -n aml pip install .",
+    --     opts = {
+    --         default_notebook_URL = "localhost:8889/nbclassic",
+    --         python_host = { "conda", "run", "--no-capture-output", "-n", "aml", "python" },
+    --         jupyter_command = { "conda", "run", "--no-capture-output", "-n", "aml", "jupyter" }
+    --     },
+    --     config = function()
+    --         vim.g.jupynium_auto_download_ipynb = false
+    --         vim.keymap.set("n", "<leader>J", ":Jupynium", { desc = "[mm] Jupynium prefix" })
+    --     end
+    -- },
 }
 
 ---@type LazyConfig
@@ -222,16 +243,16 @@ vim.lsp.config('clangd', {
 
 vim.lsp.enable({
     'lua_ls',
-    'rust_analyzer', -- install via rust toolchain
+    'rust_analyzer', -- installed via rustup, not mason
     'ts_ls',
     'jsonls',
     'cssls',
     'html',
     'eslint',
     'tailwindcss',
-    'tinymist',                    -- install via cargo
+    'tinymist',
     'clangd',
-    'pyright',                     -- install via pip
-    'ruff',                        -- install via brew
-    'solidity_ls_nomicfoundation', -- install via npm
+    'pyright',
+    'ruff',
+    'solidity_ls_nomicfoundation',
 })
