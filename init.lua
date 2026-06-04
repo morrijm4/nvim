@@ -134,6 +134,8 @@ vim.cmd([[tnoremap <Esc> <C-\><C-n>]]) -- map Esc to exit "TERMINAL" mode
 ---------------
 -- Telescope --
 ---------------
+require('telescope-deps').check()
+
 local telescope = require('telescope.builtin')
 vim.keymap.set('n', '<Leader>p', telescope.find_files, { desc = '[mm] File finder' })
 vim.keymap.set('n', 'gs', telescope.git_status, { desc = '[mm] Git status' })
